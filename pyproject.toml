@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "docker_rt_storage"
+version = "0.1.0"
+description = ""
+authors = ["YuleYang <YYWENXIN@outlook.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+ta = "^0.10.2"
+akshare = "^1.8.87"
+pymysql = "^1.0.2"
+sqlalchemy = "^2.0.4"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
