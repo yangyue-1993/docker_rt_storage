@@ -12,6 +12,7 @@ from datetime import datetime
 from sqlalchemy import String
 from datetime import datetime, timedelta
 import akshare as ak
+import time
 
 # 先读取数据库当中的search_stocks表，获取当前需要存储信息的股票
 engine = create_engine('mysql+pymysql://root:MJ57N01o6iTFxt2An5DH@containers-us-west-92.railway.app:7780/railway')
@@ -74,6 +75,7 @@ while True:
         or (today.hour >= 13 and today.hour <= 15))):
             # 第二层if 确保在30分钟的时候，因为插入的都是30分钟的数据
             if today.minute == 0 or today.minute == 30:
+                print(f"开始进入了30分钟的时间范围了")
                 with Session(engine) as session:
                     search_stocks = session.execute(text("select * from search_stocks3")).all()
                     tables = session.execute(text("show tables")).all()
@@ -119,5 +121,6 @@ while True:
                                                 rate=realtime_df.iloc[0]["换手率"])
                             session.add(tmp)
                             session.commit()
-    # 判断完一次要间隔一分钟
-    sleep(1)
+                            print(f"更新了{stock[1]}一条新的数据")
+    # 判断完一次要间隔1秒钟
+    time.sleep(1)
