@@ -69,8 +69,9 @@ def get_table(name):
 
 while True:
     today = datetime.today()
+    print("测试logs")
     # 第一层if 确保在股票的交易时间，即周一到周五的上午9.30-11.30， 下午的13.00-15.00
-    if (0 <= today.weekday() <= 4 
+    if ((0 <= today.weekday() <= 4)
         and ((today.hour == 9 and today.minute >= 30) or (today.hour == 10) or (today.hour == 11 and today.minute <= 30)
         or (today.hour >= 13 and today.hour <= 15))):
             # 第二层if 确保在30分钟的时候，因为插入的都是30分钟的数据
