@@ -10,6 +10,7 @@ ta = "^0.10.2"
 akshare = "^1.8.87"
 pymysql = "^1.0.2"
 sqlalchemy = "^2.0.4"
+pytz = "^2023.3"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

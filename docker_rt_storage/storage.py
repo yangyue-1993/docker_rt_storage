@@ -1,4 +1,5 @@
 from time import sleep
+import py
 from sqlalchemy import create_engine
 from sqlalchemy import text
 from sqlalchemy import Table, MetaData, create_engine, Column, Integer, String, SmallInteger, DateTime
@@ -13,9 +14,10 @@ from sqlalchemy import String
 from datetime import datetime, timedelta, timezone
 import akshare as ak
 import time
+import pytz
 
-# 创建UTC+8.00时区，也就是北京时区
-tz_utc_8 = timezone(timedelta(hours=8))
+# 创建上海时区
+china_tz = pytz.timezone('Asia/Shanghai')
 
 
 # 先读取数据库当中的search_stocks表，获取当前需要存储信息的股票
@@ -72,8 +74,7 @@ def get_table(name):
 #                 成交额: {self.account}, 振幅: {self.amplitude}, 换手率: {self.rate}"
 flag = False
 while True:
-    today = datetime.today()
-    today = today.replace(tzinfo=tz_utc_8)
+    today = datetime.now().astimezone(china_tz)
     print(today)
     # 第一层if 确保在股票的交易时间，即周一到周五的上午9.30-11.30， 下午的13.00-15.00
     if ((0 <= today.weekday() <= 4)
@@ -123,8 +124,9 @@ while True:
                     CurrentStockTable = get_table(stock[1])
                     stock_realtime_df = ak.stock_zh_a_spot_em()
                     realtime_df = stock_realtime_df[stock_realtime_df['代码'] == stock[1]]
-                    now = datetime.today()
-                    tmp = CurrentStockTable(time=now, close=realtime_df.iloc[0]['最新价'], attitude=realtime_df.iloc[0]["涨跌幅"], 
+                    now = datetime.now().astimezone(china_tz)
+                    now_str = now.strftime('%Y-%m-%d %H:%M:%S')
+                    tmp = CurrentStockTable(time=now_str, close=realtime_df.iloc[0]['最新价'], attitude=realtime_df.iloc[0]["涨跌幅"], 
                                         attitude_account=realtime_df.iloc[0]["涨跌额"], scalar=realtime_df.iloc[0]["成交量"], 
                                         account=realtime_df.iloc[0]["成交额"], amplitude=realtime_df.iloc[0]["振幅"], 
                                         rate=realtime_df.iloc[0]["换手率"])
