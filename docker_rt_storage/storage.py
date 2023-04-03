@@ -10,9 +10,13 @@ from typing import Optional
 from sqlalchemy.orm import DeclarativeBase, declarative_base
 from datetime import datetime
 from sqlalchemy import String
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 import akshare as ak
 import time
+
+# 创建UTC+8.00时区，也就是北京时区
+tz_utc_8 = timezone(timedelta(hours=8))
+
 
 # 先读取数据库当中的search_stocks表，获取当前需要存储信息的股票
 engine = create_engine('mysql+pymysql://root:MJ57N01o6iTFxt2An5DH@containers-us-west-92.railway.app:7780/railway')
@@ -69,6 +73,7 @@ def get_table(name):
 flag = False
 while True:
     today = datetime.today()
+    today = today.replace(tzinfo=tz_utc_8)
     print(today)
     # 第一层if 确保在股票的交易时间，即周一到周五的上午9.30-11.30， 下午的13.00-15.00
     if ((0 <= today.weekday() <= 4)
