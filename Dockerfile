@@ -5,5 +5,4 @@ ENV WORKDIR=/home/code
 COPY ./ ${WORKDIR}
 RUN cd ${WORKDIR} && poetry install
 RUN chmod a+x /home/code/docker_rt_storage/storage.py
-RUN echo 'Asia/Shanghai' >/etc/timezone
 ENTRYPOINT [ "python", "docker_rt_storage/storage.py" ]
